@@ -1,12 +1,11 @@
-console.log("page-worker that analyze samlim page is started");
+console.log("analyzer: page-worker that analyze samlim page is started");
 
 $(document).ready(function() {
     console.log("analyzer: trying to analyze url" + document.URL);
-    if ($("*:contains('Размещен:'):contains('изменен:')").toArray().length != 0) {
+    if ((/Размещен: \d+\/\d+\/\d+, изменен: \d+\/\d+\/\d+./).test(document.body.innerHTML)) {
         // we work with book page
-        var mayBeSize = $("li:contains('изменен'):first").toArray();
-        var size = mayBeSize[0].innerHTML.match(/\d+k/)[0];
-        size = size.slice(0, size.length - 1);
+        var size = document.body.innerHTML.match(/\d+k\./)[0];
+        size = parseInt(size.slice(0, size.length - 2));
         console.log("analyzer: size of book = " + size);
         self.port.emit("analyzed", { 
             type: "bookPage",
@@ -15,12 +14,9 @@ $(document).ready(function() {
         });
     } else {
         // we work with author page
-        var table = $("ul:contains('Объем'):first").toArray();
-        if (table.length == 0) {
-            console.log("analyzer: analyzing samlib technical page, exiting");
-        } else {
-            var size = table[0].innerHTML.match(/\d+k\/\d/)[0];
-            size = size.slice(0, size.length - 3);
+        if ((/Объем:/).test(document.body.innerHTML)) {
+            var size = document.body.innerHTML.match(/\d+k\/\d/)[0];
+            size = parseInt(size.slice(0, size.length - 3));
             console.log("analyzer: total size of all books on author page = " + size);
 
             self.port.emit("analyzed", {
@@ -28,6 +24,8 @@ $(document).ready(function() {
                 totalSize: size,
                 url: document.URL
             });
+        } else {
+            console.log("analyzer: analyzing samlib technical page, exiting");
         }
     }
 });

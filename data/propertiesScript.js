@@ -7,8 +7,8 @@ self.port.on("properties", function(arg) {
 });
 
 $("#apply").click(function() {
-    properties.bookPageMinSize= $("#bookSize").val();
-    properties.authorPageMinSize = $("#authorSize").val();
+    properties.bookPageMinSize = parseInt($("#bookSize").val());
+    properties.authorPageMinSize = parseInt($("#authorSize").val());
 
     console.log("submit button is clicked");
     console.log("bookSize = " + properties.bookPageMinSize);

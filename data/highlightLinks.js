@@ -36,12 +36,13 @@ function uncolorAll() {
 
 
 self.port.on("color", function(payload) {
-    console.log("highlighter: message color received");
+    console.log("highlighter: message color received URL = " + payload.url);
 
     for (var i = 0; i < samlibLinks[payload.url].length; ++i) {
         if (payload.type == "authorPage") {
             colorElem(samlibLinks[payload.url][i], "green");
         } else {
+			console.log("highlighter: book count +1");
             colorElem(samlibLinks[payload.url][i], "red");
         }
     }
@@ -49,7 +50,6 @@ self.port.on("color", function(payload) {
 
 self.port.on("update", function() {
     console.log("highlighter: update message received");
-    console.log("highlighter: samlibLinks.length = " + samlibLinks.length);
     uncolorAll();
 
     var result = [];
