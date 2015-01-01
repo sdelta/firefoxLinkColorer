@@ -4,15 +4,18 @@ self.port.on("properties", function(arg) {
     properties = arg;
     $("#bookSize").attr("value", arg.bookPageMinSize);
     $("#authorSize").attr("value", arg.authorPageMinSize);
+    $("#ficbookSize").attr("value", arg.ficbookPageMinSize);
 });
 
 $("#apply").click(function() {
     properties.bookPageMinSize = parseInt($("#bookSize").val());
     properties.authorPageMinSize = parseInt($("#authorSize").val());
+    properties.ficbookPageMinSize = parseInt($("#ficbookSize").val());
 
     console.log("submit button is clicked");
     console.log("bookSize = " + properties.bookPageMinSize);
     console.log("authorSize = " + properties.authorPageMinSize);
+    console.log("ficbookSize = " + properties.ficbookSize);
     
     self.port.emit("setProperties", properties);
     // without "applyProperties" message links coloring will not be change until button "scan" is clicked
