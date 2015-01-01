@@ -67,13 +67,11 @@ self.port.on("scan", function() {
     var result = [];
 
     for (var i = 0; i < lst.length; i++) {
-        if (lst[i].href.indexOf("samlib.ru") > -1) {
-            if (samlibLinks.hasOwnProperty(lst[i].href)) {
-                samlibLinks[lst[i].href].push(lst[i]);
-            } else {
-                samlibLinks[lst[i].href] = [lst[i]];
-                result.push(lst[i].href);
-            }
+        if (samlibLinks.hasOwnProperty(lst[i].href)) {
+            samlibLinks[lst[i].href].push(lst[i]);
+        } else {
+            samlibLinks[lst[i].href] = [lst[i]];
+            result.push(lst[i].href);
         }
     }
 
