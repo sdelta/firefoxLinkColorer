@@ -35,15 +35,16 @@ function uncolorAll() {
 }
 
 
-self.port.on("color", function(payload) {
+self.port.on("color", function(payload, properties) {
     console.log("highlighter: message color received URL = " + payload.url);
 
     for (var i = 0; i < samlibLinks[payload.url].length; ++i) {
-        if (payload.type == "authorPage") {
-            colorElem(samlibLinks[payload.url][i], "green");
+        if (payload.type == "bookPage"){
+            colorElem(samlibLinks[payload.url][i], "#" + properties.colorOfLinkToBookPage);
+        } else if (payload.type == "authorPage") {
+            colorElem(samlibLinks[payload.url][i], "#" + properties.colorOfLinkToAuthorPage);
         } else {
-			console.log("highlighter: book count +1");
-            colorElem(samlibLinks[payload.url][i], "red");
+            colorElem(samlibLinks[payload.url][i], "#" + properties.colorOfLinkToFicbookPage);
         }
     }
 });

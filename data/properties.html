@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-        <link rel="stylesheet" href="css/colpick.css" type="text/css"/>
+        <link rel="stylesheet" href="colpick/colpick.css" type="text/css"/>
         <style>
             .description {
                 text-align: center;
@@ -16,12 +16,23 @@
             
             .row {
                 display: table-row;
+                height: 30px;
             }
 
             .row > div {
                 display: table-cell;
             }
 
+            .row > div > div {
+                float: left;
+            }
+
+            .color-box {
+                width: 18px;
+                height: 18px;
+                border: 1px solid black;
+            }
+        
             .apply {
                 text-align: center;
                 clear: both;
@@ -32,22 +43,36 @@
         <div class="description">
             Изменить цвет ссылки если:
         </div>
+
+
         <div class="table">
             <div class="row">
                 <div>книга на самиздате больше</div>
                 <div><input id="bookSize" type="number">Кб</div>
+                <div>
+                    <div class="color-box" id="bookColor">&nbsp;</div>
+                    <div>&nbsp;</div>
+                </div>
             </div>
             <div class="row">
                 <div>автор самиздата написал больше</div>
                 <div><input id="authorSize" type="number">Кб</div>
+                <div>
+                    <div class="color-box" id="authorColor">&nbsp;</div>
+                    <div>&nbsp;</div>
+                </div>
             </div>
             <div class="row">
-                <div>книга на фикбуке больше </div>
+                <div>книга на фикбуке больше</div>
                 <div><input id="ficbookSize" type="number">Стр</div>
+                <div>
+                    <div class="color-box" id="ficbookColor">&nbsp;</div>
+                    <div>&nbsp;</div>
+                </div>
             </div>
         </div>
         <div class="apply">
-        <button id="apply">Применить</button>
+            <button id="apply">Применить</button>
         </div>
     </body>
 </html>
