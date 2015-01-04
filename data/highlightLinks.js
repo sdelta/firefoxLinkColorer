@@ -2,6 +2,7 @@ console.log('worker created...');
 
 var samlibLinks = {};
 var coloredLinks = [];
+var progressBar = {};
 
 function colorElem(elem, color) {
     coloredLinks.push(elem);
@@ -34,6 +35,16 @@ function uncolorAll() {
     coloredLinks = [];
 }
 
+self.port.on("linkAnalyzed", function() {
+    ++progressBar.analyzedLinksNumber;
+
+    // this if should be fixed after refactoring parser.js module
+    if (progressBar.analyzedLinksNumber >= progressBar.linksNumber) {
+        progressBar.bar.go(100);
+    } else {
+        progressBar.bar.go(Math.round(progressBar.analyzedLinksNumber / progressBar.linksNumber * 100));
+    }
+});
 
 self.port.on("color", function(payload, properties) {
     console.log("highlighter: message color received URL = " + payload.url);
@@ -53,6 +64,8 @@ self.port.on("update", function() {
     console.log("highlighter: update message received");
     uncolorAll();
 
+    progressBar.analyzedLinksNumber = 0;
+
     var result = [];
     for (var url in samlibLinks) {
         result.push(url);
@@ -64,6 +77,9 @@ self.port.on("update", function() {
 
 self.port.on("scan", function() {
     console.log('highlighter: message "scan" received');
+
+    progressBar.bar = new Nanobar({targer: null});
+
     var lst = document.links;
     var result = [];
 
@@ -75,6 +91,9 @@ self.port.on("scan", function() {
             result.push(lst[i].href);
         }
     }
+
+    progressBar.linksNumber = result.length;
+    progressBar.analyzedLinksNumber = 0;
 
     self.port.emit("links", result);
 });
