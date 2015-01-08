@@ -35,9 +35,10 @@ function uncolorAll() {
     coloredLinks = [];
 }
 
-self.port.on("linkAnalyzed", function() {
+self.port.on("shiftProgressBar", function(percent) {
+    console.log("highlighter: shifting progressBar");
     ++progressBar.analyzedLinksNumber;
-    progressBar.bar.go(Math.round(progressBar.analyzedLinksNumber / progressBar.linksNumber * 100));
+    progressBar.bar.go(Math.round(percent * 100));
 });
 
 self.port.on("color", function(payload, properties) {
@@ -63,6 +64,7 @@ self.port.on("update", function() {
     var result = [];
     for (var url in samlibLinks) {
         result.push(url);
+        console.log("highlighter: result.push(" + url +")");
     }
 
     self.port.emit("links", result)
@@ -71,23 +73,17 @@ self.port.on("update", function() {
 self.port.on("scan", function() {
     console.log('highlighter: message "scan" received');
 
-
     progressBar.bar = new Nanobar({targer: null});
 
     var lst = document.links;
     var result = [];
 
     for (var i = 0; i < lst.length; i++) {
-        var parser = exports.createParserInstance(exports.parserClass);
-
-        if (parser.checkUrl(lst[i].href)){
-            if (samlibLinks.hasOwnProperty(lst[i].href)) {
-                samlibLinks[lst[i].href].push(lst[i]);
-            } else {
-                samlibLinks[lst[i].href] = [lst[i]];
-                result.push(lst[i].href);
-                console.log("highlighter: link = " + lst[i].href); 
-            }
+        if (samlibLinks.hasOwnProperty(lst[i].href)) {
+            samlibLinks[lst[i].href].push(lst[i]);
+        } else {
+            samlibLinks[lst[i].href] = [lst[i]];
+            result.push(lst[i].href);
         }
     }
 
