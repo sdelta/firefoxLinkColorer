@@ -2,19 +2,19 @@ self.port.on("properties", function(arg) {
     console.log("properties: properties form received \"properties\" message");
     properties = arg;
 
-    $("#bookSize").attr("value", properties.bookPageMinSize);
-    $("#authorSize").attr("value", properties.authorPageMinSize);
-    $("#ficbookSize").attr("value", properties.ficbookPageMinSize);
+    $("#bookSize").attr("value", properties.samlibBookPageMinSize);
+    $("#authorSize").attr("value", properties.samlibAuthorPageMinSize);
+    $("#ficbookSize").attr("value", properties.ficbookBookPageMinSize);
 
-    $("#bookColor").css("background-color", "#" + properties.colorOfLinkToBookPage);
-    $("#authorColor").css("background-color", "#" + properties.colorOfLinkToAuthorPage);
-    $("#ficbookColor").css("background-color", "#" + properties.colorOfLinkToFicbookPage);
+    $("#bookColor").css("background-color", "#" + properties.colorOfLinkToSamlibBookPage);
+    $("#authorColor").css("background-color", "#" + properties.colorOfLinkToSamlibAuthorPage);
+    $("#ficbookColor").css("background-color", "#" + properties.colorOfLinkToFicbookBookPage);
 });
 
 $("#apply").click(function() {
-    properties.bookPageMinSize = parseInt($("#bookSize").val());
-    properties.authorPageMinSize = parseInt($("#authorSize").val());
-    properties.ficbookPageMinSize = parseInt($("#ficbookSize").val());
+    properties.samlibBookPageMinSize = parseInt($("#bookSize").val());
+    properties.samlibAuthorPageMinSize = parseInt($("#authorSize").val());
+    properties.ficbookBookPageMinSize = parseInt($("#ficbookSize").val());
 
     console.log("properties: submit button is clicked");
     for (var i in properties) {
@@ -42,7 +42,7 @@ $(document).ready(function() {
         }
     }
 
-    $("#bookColor").colpick(options("colorOfLinkToBookPage"));
-    $("#authorColor").colpick(options("colorOfLinkToAuthorPage"));
-    $("#ficbookColor").colpick(options("colorOfLinkToFicbookPage"));
+    $("#bookColor").colpick(options("colorOfLinkToSamlibBookPage"));
+    $("#authorColor").colpick(options("colorOfLinkToSamlibAuthorPage"));
+    $("#ficbookColor").colpick(options("colorOfLinkToFicbookBookPage"));
 });

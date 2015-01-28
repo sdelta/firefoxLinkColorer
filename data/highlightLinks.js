@@ -45,12 +45,12 @@ self.port.on("color", function(payload, properties) {
     console.log("highlighter: message color received URL = " + payload.url);
 
     for (var i = 0; i < samlibLinks[payload.url].length; ++i) {
-        if (payload.type == "bookPage"){
-            colorElem(samlibLinks[payload.url][i], "#" + properties.colorOfLinkToBookPage);
-        } else if (payload.type == "authorPage") {
-            colorElem(samlibLinks[payload.url][i], "#" + properties.colorOfLinkToAuthorPage);
+        if (payload.type == "samlibBookPage"){
+            colorElem(samlibLinks[payload.url][i], "#" + properties.colorOfLinkToSamlibBookPage);
+        } else if (payload.type == "samlibAuthorPage") {
+            colorElem(samlibLinks[payload.url][i], "#" + properties.colorOfLinkToSamlibAuthorPage);
         } else {
-            colorElem(samlibLinks[payload.url][i], "#" + properties.colorOfLinkToFicbookPage);
+            colorElem(samlibLinks[payload.url][i], "#" + properties.colorOfLinkToFicbookBookPage);
         }
     }
 });
