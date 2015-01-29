@@ -2,7 +2,9 @@ console.log('worker created...');
 
 var samlibLinks = {};
 var coloredLinks = [];
-var progressBar = {};
+var progressBar = {
+    bar: new Nanobar({targer: null})
+};
 
 function colorElem(elem, color) {
     coloredLinks.push(elem);
@@ -35,10 +37,16 @@ function uncolorAll() {
     coloredLinks = [];
 }
 
-self.port.on("shiftProgressBar", function(percent) {
+self.port.on("numberOfShares", function(number) {
+    progressBar.numberOfShares = number;
+    progressBar.numberOfProcessedShares = 0;
+});
+
+self.port.on("shiftProgressBar", function() {
     console.log("highlighter: shifting progressBar");
-    ++progressBar.analyzedLinksNumber;
-    progressBar.bar.go(Math.round(percent * 100));
+    ++progressBar.numberOfProcessedShares;
+    var percent = (progressBar.numberOfProcessedShares / progressBar.numberOfShares) * 100;
+    progressBar.bar.go(Math.round(percent));
 });
 
 self.port.on("color", function(payload, properties) {
@@ -59,21 +67,12 @@ self.port.on("update", function() {
     console.log("highlighter: update message received");
     uncolorAll();
 
-    progressBar.analyzedLinksNumber = 0;
-
-    var result = [];
-    for (var url in samlibLinks) {
-        result.push(url);
-        console.log("highlighter: result.push(" + url +")");
-    }
-
-    self.port.emit("links", result)
+    self.port.emit("links", Object.keys(samlibLinks))
 });
 
 self.port.on("scan", function() {
     console.log('highlighter: message "scan" received');
 
-    progressBar.bar = new Nanobar({targer: null});
 
     var lst = document.links;
     var result = [];
@@ -86,9 +85,6 @@ self.port.on("scan", function() {
             result.push(lst[i].href);
         }
     }
-
-    progressBar.linksNumber = result.length;
-    progressBar.analyzedLinksNumber = 0;
 
     self.port.emit("links", result);
 });
